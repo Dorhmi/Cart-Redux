@@ -1,6 +1,7 @@
 import { FaChevronUp,FaChevronDown } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { removeItem } from "../features/CartSlice";
+import { increase, removeItem , decrease } from "../features/CartSlice";
+import { useEffect } from "react";
 
 
 export default function CartItem ({id,title,price,img,amount}) {
@@ -14,9 +15,15 @@ export default function CartItem ({id,title,price,img,amount}) {
                 <button className="remove-btn" onClick={()=>dispatch(removeItem(id))}>remove</button>
             </div>
             <div className="article-footer">
-                <FaChevronUp className="article-icon"/>
+                <FaChevronUp onClick={()=>{dispatch(increase(id));}} className="article-icon"/>
                 <p className="article-amount">{amount}</p>
-                <FaChevronDown className="article-icon"/>
+                <FaChevronDown onClick={()=>{
+                    if(amount === 1) {
+                        dispatch(removeItem(id))
+                        return;
+                    }
+                    dispatch(decrease(id))
+                    }} className="article-icon"/>
             </div>
         </article>
     )
